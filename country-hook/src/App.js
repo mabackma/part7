@@ -15,6 +15,7 @@ const useField = (type) => {
   }
 }
 
+// Custom hook for country's state
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
 
