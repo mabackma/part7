@@ -11,7 +11,7 @@ export const useField = (type) => {
     setValue('')
   }
 
-  // Separate the inputs from the reset function so the reset function won't be used in the input fields
+  // Separate the inputs from the reset function so the reset function won't be used in the input fields.
   const inputs = {
     type,
     value,
