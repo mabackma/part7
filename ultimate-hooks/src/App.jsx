@@ -15,6 +15,7 @@ const useField = (type) => {
   }
 }
 
+// Custom hook that works for both notes and phone numbers
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
 
