@@ -19,7 +19,32 @@ const useField = (type) => {
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
 
-  useEffect(() => {})
+  const apiUrl = `https://studies.cs.helsinki.fi/restcountries/api/name/${name}`
+  useEffect(() => {
+    if (!name) {
+      setCountry({found: false, data: null})
+      return
+    }
+
+    axios
+    .get(apiUrl)
+    .then(response => {
+      const fetchedCountry = {
+        found: true,
+        data: {
+          name: name.charAt(0).toUpperCase() + name.slice(1),
+          capital: response.data.capital[0],
+          population: response.data.population,
+          flag: `https://flagcdn.com/w320/${response.data.tld[0].substring(1)}.png`
+        }
+      }
+      setCountry(fetchedCountry) 
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error)
+      setCountry({found: false, data: null})
+    })
+  }, [name])
 
   return country
 }
@@ -61,7 +86,7 @@ const App = () => {
     <div>
       <form onSubmit={fetch}>
         <input {...nameInput} />
-        <button>find</button>
+        <button onClick={fetch}>find</button>
       </form>
 
       <Country country={country} />
