@@ -1,0 +1,33 @@
+{
+  "notes": [
+    {
+      "content": "first note",
+      "id": 1
+    },
+    {
+      "content": "second note",
+      "id": 2
+    },
+    {
+      "content": "third note",
+      "id": 3
+    }
+  ],
+  "persons": [
+    {
+      "name": "first name",
+      "number": "1234123",
+      "id": 1
+    },
+    {
+      "name": "second name",
+      "number": "5678567",
+      "id": 2
+    },
+    {
+      "name": "third number",
+      "number": "1111111",
+      "id": 3
+    }
+  ]
+}

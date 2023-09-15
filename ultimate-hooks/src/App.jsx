@@ -16,22 +16,44 @@ const useField = (type) => {
 }
 
 // Custom hook that works for both notes and phone numbers
+// I've only tested it on a json-server, without the backend
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
+  const authToken = ''
 
-  // ...
+  const config = {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  }
 
-  const create = (resource) => {
-    // ...
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(baseUrl, config)
+        setResources(response.data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+
+    fetchData()
+  }, [baseUrl])
+
+  const create = async (resource) => {
+    try {
+      const response = await axios.post(baseUrl, resource)
+      setResources((prevResources) => [...prevResources, response.data])
+    } catch (error) {
+      console.error('Error creating resource:', error)
+    }
   }
 
   const service = {
-    create
+    create,
   }
 
-  return [
-    resources, service
-  ]
+  return [resources, service];
 }
 
 const App = () => {
