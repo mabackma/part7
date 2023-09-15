@@ -15,8 +15,8 @@ const useField = (type) => {
   }
 }
 
-// Custom hook that works for both notes and phone numbers
-// I've only tested it on a json-server, without the backend
+// Custom hook that works for both notes and phone numbers.
+// I've only tested it on a json-server, without the backend.
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
   const authToken = ''
