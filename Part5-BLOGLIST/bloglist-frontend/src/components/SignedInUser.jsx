@@ -2,9 +2,10 @@ const SignedInUser = ({ name, handleLogout }) => {
   return (
     <div className="signedIn">
       {name} logged in <button onClick={handleLogout}>Logout</button>
-      <br /><br />
+      <br />
+      <br />
     </div>
-  )
-}
+  );
+};
 
-export default SignedInUser
+export default SignedInUser;
