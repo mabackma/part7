@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import noteService from "./services/notes";
 
 const useField = (type) => {
   const [value, setValue] = useState('')
@@ -16,10 +16,10 @@ const useField = (type) => {
 }
 
 // Custom hook that works for both notes and phone numbers.
-// I've only tested it on a json-server, without the backend.
+// Tested with json-server at port 3005
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
-  const authToken = ''
+  const authToken = 'user token'
 
   const config = {
     headers: {
@@ -30,8 +30,9 @@ const useResource = (baseUrl) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(baseUrl, config)
-        setResources(response.data)
+        noteService.setToken(authToken)
+        const response = await noteService.getAll(baseUrl)
+        setResources(response)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -42,8 +43,9 @@ const useResource = (baseUrl) => {
 
   const create = async (resource) => {
     try {
-      const response = await axios.post(baseUrl, resource)
-      setResources((prevResources) => [...prevResources, response.data])
+      noteService.setToken()
+      const response = await noteService.create(baseUrl, resource)
+      setResources((prevResources) => [...prevResources, response])
     } catch (error) {
       console.error('Error creating resource:', error)
     }

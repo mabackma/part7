@@ -3,13 +3,16 @@ import blogService from "../services/blogs";
 import Blog from "../components/Blog";
 import lodash from "lodash";
 import TogglableCreate from "./TogglableCreate";
+import { setNotification } from "../reducers/notificationReducer";
+import { useDispatch } from "react-redux";
 
-const BlogForm = ({ blogs, setBlogs, setErrorMessage }) => {
+const BlogForm = ({ blogs, setBlogs }) => {
   const [blogTitle, setBlogTitle] = useState("");
   const [blogAuthor, setBlogAuthor] = useState("");
   const [blogUrl, setBlogUrl] = useState("");
 
   const blogFormRef = useRef();
+  const dispatch = useDispatch();
 
   const createBlog = async (event) => {
     blogFormRef.current.toggleVisibility();
@@ -28,16 +31,14 @@ const BlogForm = ({ blogs, setBlogs, setErrorMessage }) => {
       setBlogTitle("");
       setBlogAuthor("");
       setBlogUrl("");
-      setErrorMessage(`a new blog ${blogTitle} by ${blogAuthor} added`);
+      dispatch(
+        setNotification(`a new blog ${blogTitle} by ${blogAuthor} added`, 3),
+      );
       setBlogs(blogs.concat(createdBlog)); // Update blogs state
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 3000);
     } catch (exception) {
-      setErrorMessage(`Failed creating blog: ${exception.message}`);
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 3000);
+      dispatch(
+        setNotification(`Failed creating blog: ${exception.message}`, 3),
+      );
     }
   };
 
@@ -87,13 +88,7 @@ const BlogForm = ({ blogs, setBlogs, setErrorMessage }) => {
       </TogglableCreate>
 
       {sortedBlogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          blogs={blogs}
-          setBlogs={setBlogs}
-          setErrorMessage={setErrorMessage}
-        />
+        <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />
       ))}
     </div>
   );

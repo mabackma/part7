@@ -1,8 +1,10 @@
 import { useState, useRef } from "react";
 import blogService from "../services/blogs";
 import TogglableBlog from "./TogglableBlog";
+import { setNotification } from "../reducers/notificationReducer";
+import { useDispatch } from "react-redux";
 
-const Blog = ({ blog, blogs, setBlogs, setErrorMessage }) => {
+const Blog = ({ blog, blogs, setBlogs }) => {
   const blogRef = useRef();
 
   const getUsername = () => {
@@ -13,6 +15,8 @@ const Blog = ({ blog, blogs, setBlogs, setErrorMessage }) => {
     const user = JSON.parse(userString);
     return user.name;
   };
+
+  const dispatch = useDispatch();
 
   const addLike = async () => {
     const newBlogObject = {
@@ -38,15 +42,9 @@ const Blog = ({ blog, blogs, setBlogs, setErrorMessage }) => {
       const updatedBlogs = blogs.filter((prevBlog) => prevBlog.id !== blog.id);
       // update the blogs state
       setBlogs(updatedBlogs);
-      setErrorMessage(`Deleted blog ${blog.title}`);
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 3000);
+      dispatch(setNotification(`Deleted blog ${blog.title}`, 3));
     } else {
-      setErrorMessage(`Failed to delete blog ${blog.title}`);
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 3000);
+      dispatch(setNotification(`Failed to delete blog ${blog.title}`, 3));
     }
   };
 
