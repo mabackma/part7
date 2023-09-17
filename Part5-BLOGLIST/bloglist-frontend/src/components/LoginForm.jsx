@@ -2,9 +2,10 @@ import { useState } from "react";
 import loginService from "../services/login";
 import blogService from "../services/blogs";
 import { setNotification } from "../reducers/notificationReducer";
+import { userChange } from "../reducers/userReducer";
 import { useDispatch } from "react-redux";
 
-const LoginForm = ({ setUser }) => {
+const LoginForm = ({ user }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,7 +19,7 @@ const LoginForm = ({ setUser }) => {
         password,
       });
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-      setUser(user);
+      dispatch(userChange(user));
       blogService.setToken(user.token);
       setUsername("");
       setPassword("");

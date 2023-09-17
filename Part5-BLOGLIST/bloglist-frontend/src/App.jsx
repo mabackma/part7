@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Notification from "./components/Notification";
 import SignedInUser from "./components/SignedInUser";
 import LoginForm from "./components/LoginForm";
@@ -7,44 +7,30 @@ import blogService from "./services/blogs";
 import { setNotification } from "./reducers/notificationReducer";
 import { fetchBlogs } from "./reducers/blogReducer";
 import { useDispatch, useSelector } from "react-redux";
+import { userChange } from "./reducers/userReducer";
 
 const App = () => {
-  const [user, setUser] = useState(null);
-
-  const blogs = useSelector((state) => state.blogs);
+  const blogs = useSelector((state) => state.blog);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    blogService
-      .getAll()
-      .then((initialBlogs) => dispatch(fetchBlogs(initialBlogs)));
-  }, []);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      dispatch(userChange(user));
       blogService.setToken(user.token);
     }
-  }, []);
 
-  const handleLogout = async (event) => {
-    event.preventDefault();
-    try {
-      window.localStorage.removeItem("loggedBlogappUser");
-      console.log("logged out", user.name);
-      setUser(null); //The user state is now null because there is no user logged in
-      blogService.setToken(null);
-    } catch (exception) {
-      dispatch(setNotification(`Logout failed: ${exception.message}`, 3));
-    }
-  };
+    blogService
+      .getAll()
+      .then((initialBlogs) => dispatch(fetchBlogs(initialBlogs)));
+  }, []);
 
   const loginForm = () => {
     return (
       <div>
-        <LoginForm setUser={setUser} />
+        <LoginForm user={user} />
       </div>
     );
   };
@@ -52,7 +38,7 @@ const App = () => {
   const blogForm = () => (
     <div>
       <h2>blogs</h2>
-      <SignedInUser name={user.name} handleLogout={handleLogout} />
+      <SignedInUser name={user.name} setNotification={setNotification} />
       <BlogForm blogs={blogs} />
     </div>
   );
