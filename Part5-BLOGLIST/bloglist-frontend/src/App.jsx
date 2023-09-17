@@ -30,7 +30,7 @@ const App = () => {
   const loginForm = () => {
     return (
       <div>
-        <LoginForm user={user} />
+        <LoginForm />
       </div>
     );
   };

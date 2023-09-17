@@ -5,7 +5,7 @@ import { setNotification } from "../reducers/notificationReducer";
 import { userChange } from "../reducers/userReducer";
 import { useDispatch } from "react-redux";
 
-const LoginForm = ({ user }) => {
+const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
