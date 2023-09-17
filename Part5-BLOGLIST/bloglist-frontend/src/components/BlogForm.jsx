@@ -4,9 +4,10 @@ import Blog from "../components/Blog";
 import lodash from "lodash";
 import TogglableCreate from "./TogglableCreate";
 import { setNotification } from "../reducers/notificationReducer";
+import { newBlog } from "../reducers/blogReducer";
 import { useDispatch } from "react-redux";
 
-const BlogForm = ({ blogs, setBlogs }) => {
+const BlogForm = ({ blogs }) => {
   const [blogTitle, setBlogTitle] = useState("");
   const [blogAuthor, setBlogAuthor] = useState("");
   const [blogUrl, setBlogUrl] = useState("");
@@ -34,7 +35,8 @@ const BlogForm = ({ blogs, setBlogs }) => {
       dispatch(
         setNotification(`a new blog ${blogTitle} by ${blogAuthor} added`, 3),
       );
-      setBlogs(blogs.concat(createdBlog)); // Update blogs state
+      // Update blogs state
+      dispatch(newBlog(createdBlog));
     } catch (exception) {
       dispatch(
         setNotification(`Failed creating blog: ${exception.message}`, 3),
@@ -88,7 +90,7 @@ const BlogForm = ({ blogs, setBlogs }) => {
       </TogglableCreate>
 
       {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />
+        <Blog key={blog.id} blog={blog} blogs={blogs} />
       ))}
     </div>
   );

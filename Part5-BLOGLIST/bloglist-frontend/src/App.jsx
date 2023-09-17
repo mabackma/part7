@@ -1,20 +1,23 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Notification from "./components/Notification";
 import SignedInUser from "./components/SignedInUser";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
 import blogService from "./services/blogs";
 import { setNotification } from "./reducers/notificationReducer";
-import { useDispatch } from "react-redux";
+import { fetchBlogs } from "./reducers/blogReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
 
+  const blogs = useSelector((state) => state.blogs);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    blogService.getAll().then((initialBlogs) => setBlogs(initialBlogs));
+    blogService
+      .getAll()
+      .then((initialBlogs) => dispatch(fetchBlogs(initialBlogs)));
   }, []);
 
   useEffect(() => {
@@ -50,7 +53,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <SignedInUser name={user.name} handleLogout={handleLogout} />
-      <BlogForm blogs={blogs} setBlogs={setBlogs} />
+      <BlogForm blogs={blogs} />
     </div>
   );
 

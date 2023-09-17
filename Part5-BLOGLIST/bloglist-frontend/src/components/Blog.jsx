@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import blogService from "../services/blogs";
 import TogglableBlog from "./TogglableBlog";
 import { setNotification } from "../reducers/notificationReducer";
+import { deleteBlog, increaseLike } from "../reducers/blogReducer";
 import { useDispatch } from "react-redux";
 
-const Blog = ({ blog, blogs, setBlogs }) => {
+const Blog = ({ blog, blogs }) => {
   const blogRef = useRef();
 
   const getUsername = () => {
@@ -24,24 +25,14 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     };
 
     const updatedBlog = await blogService.update(newBlogObject, blog.id);
-
-    // Map over the previous blogs and update the specific blog that matches the id
-    const updatedBlogs = blogs.map((prevBlog) =>
-      prevBlog.id === updatedBlog.id ? updatedBlog : prevBlog,
-    );
-
-    // update the blogs state
-    setBlogs(updatedBlogs);
+    dispatch(increaseLike(updatedBlog));
   };
 
   const removeBlog = async () => {
     const isRemoved = await blogService.removeOne(blog);
 
     if (isRemoved) {
-      // Filter the previous blogs without the deleted blog
-      const updatedBlogs = blogs.filter((prevBlog) => prevBlog.id !== blog.id);
-      // update the blogs state
-      setBlogs(updatedBlogs);
+      dispatch(deleteBlog(blogs, blog.id));
       dispatch(setNotification(`Deleted blog ${blog.title}`, 3));
     } else {
       dispatch(setNotification(`Failed to delete blog ${blog.title}`, 3));
@@ -56,7 +47,9 @@ const Blog = ({ blog, blogs, setBlogs }) => {
       blogAuthor={blog.author}
       ref={blogRef}
     >
-      <div>{blog.url}</div>
+      <div>
+        <a href={blog.url}>{blog.url}</a>
+      </div>
       <div className="likes">
         likes {blog.likes}&nbsp;
         <button onClick={() => addLike()}>like</button>
