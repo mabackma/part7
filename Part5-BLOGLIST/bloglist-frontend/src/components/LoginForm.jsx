@@ -24,7 +24,7 @@ const LoginForm = ({ setPage }) => {
       setUsername("");
       setPassword("");
       console.log("logging in with", user.name, password);
-      setPage('home')
+      setPage("home");
     } catch (exception) {
       dispatch(setNotification("wrong username or password", 3));
     }
