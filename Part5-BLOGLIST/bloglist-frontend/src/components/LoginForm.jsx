@@ -5,7 +5,7 @@ import { setNotification } from "../reducers/notificationReducer";
 import { userChange } from "../reducers/userReducer";
 import { useDispatch } from "react-redux";
 
-const LoginForm = () => {
+const LoginForm = ({ setPage }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,13 +24,13 @@ const LoginForm = () => {
       setUsername("");
       setPassword("");
       console.log("logging in with", user.name, password);
+      setPage('home')
     } catch (exception) {
       dispatch(setNotification("wrong username or password", 3));
     }
   };
 
   return (
-    // Has a className for Cypress testing
     <div className="login-form-container">
       <h2>log in to application</h2>
       <form onSubmit={handleLogin}>
