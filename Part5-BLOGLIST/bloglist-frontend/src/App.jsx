@@ -93,7 +93,10 @@ const App = () => {
       </div>
 
       <Routes>
-        <Route path="/blogs/:id" element={<BlogInfo blogs={blogs} setNotification={setNotification}/>} />
+        <Route
+          path="/blogs/:id"
+          element={<BlogInfo blogs={blogs} setNotification={setNotification} />}
+        />
         <Route path="/users/:id" element={<User users={users} />} />
         <Route path="/users" element={<Users />} />
         <Route path="/" element={Home()} />

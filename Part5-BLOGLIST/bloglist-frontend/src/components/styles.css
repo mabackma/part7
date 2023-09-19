@@ -35,7 +35,9 @@ button:hover {
   background-color: #115599;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: #115599;
 }
 
