@@ -5,6 +5,7 @@ import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
 import UsersInfo from "./components/UsersInfo";
 import User from "./components/User";
+import BlogInfo from "./components/BlogInfo";
 import blogService from "./services/blogs";
 import userService from "./services/users";
 import { setNotification } from "./reducers/notificationReducer";
@@ -92,6 +93,7 @@ const App = () => {
       </div>
 
       <Routes>
+        <Route path="/blogs/:id" element={<BlogInfo blogs={blogs} setNotification={setNotification}/>} />
         <Route path="/users/:id" element={<User users={users} />} />
         <Route path="/users" element={<Users />} />
         <Route path="/" element={Home()} />
